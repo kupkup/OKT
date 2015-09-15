@@ -44,8 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataFilter.cs" />
     <Compile Include="Depth.cs" />
-    <Compile Include="Market.cs" />
+    <Compile Include="HistoryFile.cs" />
+    <Compile Include="Ticker.cs" />
     <Compile Include="OKCoin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebClientPlus.cs">

@@ -29,11 +29,11 @@ namespace OKCoinAPI
             set { api_ver = value; }
         }
 
-        MarketType marketType = MarketType.LTC;
-        public MarketType MarketTypeName
+        TickerType tickerType = TickerType.LTC;
+        public TickerType TickerTypeName
         {
-            get { return marketType; }
-            set { marketType = value; }
+            get { return tickerType; }
+            set { tickerType = value; }
         }
 
         public OKCoin(string api_key, string api_secret, int timeout = 5000, int timezone = 8)
@@ -53,10 +53,10 @@ namespace OKCoinAPI
         {
             string url = GET_API_URL(action);
 
-            switch (marketType)
+            switch (tickerType)
             {
-                case MarketType.BTC: url = url + "symbol=btc_cny"; break;
-                case MarketType.LTC: url = url + "symbol=ltc_cny"; break;
+                case TickerType.BTC: url = url + "symbol=btc_cny"; break;
+                case TickerType.LTC: url = url + "symbol=ltc_cny"; break;
             }
 
             return url;
@@ -109,9 +109,9 @@ namespace OKCoinAPI
         /// 获取OKCoin行情
         /// </summary>
         /// <returns></returns>
-        public Market GetTicker()
+        public Ticker GetTicker()
         {
-            Market result = null;
+            Ticker result = null;
 
             try
             {
@@ -119,8 +119,9 @@ namespace OKCoinAPI
 
                 JObject json = Get(url);
 
-                result = new Market()
+                result = new Ticker()
                 {
+                    Time = DateTime.Now,
                     High = json["ticker"]["high"].Value<decimal>(),
                     Low = json["ticker"]["low"].Value<decimal>(),
                     Buy = json["ticker"]["buy"].Value<decimal>(),
@@ -207,7 +208,7 @@ namespace OKCoinAPI
             {
                 Dictionary<string, string> paramList = new Dictionary<string, string>();
                 paramList.Add("api_key", this.api_key);
-                paramList.Add("symbol", (marketType == MarketType.BTC ? "btc_cny" : "ltc_cny"));
+                paramList.Add("symbol", (tickerType == TickerType.BTC ? "btc_cny" : "ltc_cny"));
                 paramList.Add("type", tradeParam.type);
                 paramList.Add("price", tradeParam.price.ToString());
                 paramList.Add("amount", tradeParam.amount.ToString());
@@ -244,7 +245,7 @@ namespace OKCoinAPI
             {
                 Dictionary<string, string> paramList = new Dictionary<string, string>();
                 paramList.Add("api_key", this.api_key);
-                paramList.Add("symbol", (marketType == MarketType.BTC ? "btc_cny" : "ltc_cny"));
+                paramList.Add("symbol", (tickerType == TickerType.BTC ? "btc_cny" : "ltc_cny"));
                 paramList.Add("order_id", orderID);
 
                 JObject json = Post(GET_API_URL("cancel_order.do"), paramList);
@@ -279,7 +280,7 @@ namespace OKCoinAPI
             {
                 Dictionary<string, string> paramList = new Dictionary<string, string>();
                 paramList.Add("api_key", this.api_key);
-                paramList.Add("symbol", (marketType == MarketType.BTC ? "btc_cny" : "ltc_cny"));
+                paramList.Add("symbol", (tickerType == TickerType.BTC ? "btc_cny" : "ltc_cny"));
                 paramList.Add("order_id", orderID);
 
                 JObject json = Post(GET_API_URL("order_info.do"), paramList);
@@ -300,8 +301,8 @@ namespace OKCoinAPI
                         item.amount = token[i]["amount"].Value<decimal>();
                         item.avg_price = token[i]["avg_price"].Value<decimal>();
                         item.deal_amount = token[i]["deal_amount"].Value<decimal>();
-                        item.order_id = token[i]["order_id"].Value<decimal>();
-                        item.orders_id = token[i]["orders_id"].Value<decimal>();
+                        item.order_id = token[i]["order_id"].Value<string>();
+                        item.orders_id = token[i]["orders_id"].Value<string>();
                         item.price = token[i]["price"].Value<decimal>();
                         item.status = token[i]["status"].Value<string>();
                         item.symbol = token[i]["symbol"].Value<string>();

@@ -5,14 +5,15 @@ using System.Text;
 
 namespace OKCoinAPI
 {
-    public enum MarketType 
+    public enum TickerType 
     { 
         BTC, 
         LTC 
     }
 
-    public class Market
+    public class Ticker
     {
+        public DateTime Time;
         public decimal High;
         public decimal Low;
         public decimal Buy;

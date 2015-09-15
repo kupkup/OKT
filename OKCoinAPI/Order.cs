@@ -11,8 +11,8 @@ namespace OKCoinAPI
         public decimal avg_price;       //平均成交价
         public DateTime create_date;    //委托时间
         public decimal deal_amount;     //成交数量
-        public decimal order_id;        //订单ID
-        public decimal orders_id;       //订单ID(不建议使用)
+        public string order_id;        //订单ID
+        public string orders_id;       //订单ID(不建议使用)
         public decimal price;           //委托价格
         public string status;           //-1:已撤销  0:未成交  1:部分成交  2:完全成交 4:撤单处理中
         public string symbol;
